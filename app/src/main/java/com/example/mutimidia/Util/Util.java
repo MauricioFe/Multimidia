@@ -3,11 +3,16 @@ package com.example.mutimidia.Util;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.text.format.DateFormat;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 
 public abstract class Util {
@@ -48,6 +53,58 @@ public abstract class Util {
 
     public static String getUltimaMidia(Context context, int tipo) {
         return context.getSharedPreferences(PREFERENCIA_MIDIA, Context.MODE_PRIVATE).getString(CHAVES_PREF[tipo], null);
+    }
+
+    public static Bitmap carregarImagem(File imagem, int largura, int altura) {
+        if (largura == 0 || altura == 0)
+            return null;
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imagem.getAbsolutePath(), bmOptions);
+
+        int larguraFoto = bmOptions.outWidth;
+        int alturaFoto = bmOptions.outHeight;
+
+        int escala = Math.min(larguraFoto / largura, alturaFoto / altura);
+
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = escala;
+        bmOptions.inPurgeable = true;
+        bmOptions.inPreferredConfig = Bitmap.Config.RGB_565;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(imagem.getAbsolutePath(), bmOptions);
+        bitmap = rotacionar(bitmap, imagem.getAbsolutePath());
+        return bitmap;
+    }
+
+    private static Bitmap rotacionar(Bitmap bitmap, String path) {
+
+        try {
+            ExifInterface ei  = new ExifInterface(path);
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    bitmap = rotacionar(bitmap, 90);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    bitmap = rotacionar(bitmap, 180);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    bitmap = rotacionar(bitmap, 270);
+                    break;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bitmap;
+    }
+
+    private static Bitmap rotacionar(Bitmap source, float angle){
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        Bitmap bitmap = Bitmap.createBitmap(source, 0 , 0, source.getWidth(), source.getHeight(), matrix, true);
+        return bitmap;
     }
 
 }
