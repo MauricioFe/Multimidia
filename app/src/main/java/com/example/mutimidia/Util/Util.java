@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.util.Date;
 
 public abstract class Util {
+    /*Essa é uma classe utilitária na qual foi definido algumas constantes e métodos que utilizaremos nas capturas
+    * de imagens e vídeos. O método novaMidia gera um nome para a mídia com a data do aparelho. */
+
     public static final int MIDIA_FOTO = 0;
     public static final int MIDIA_VIDEO = 1;
     public static final int MEDIA_AUDIO = 2;
