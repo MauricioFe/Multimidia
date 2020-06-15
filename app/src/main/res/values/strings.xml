@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Mutimidia</string>
+    <string name="description">Imagem para salvar o conteudo</string>
+    <string name="description_btn">Botão para abrir a camera do aparelho</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
