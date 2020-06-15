@@ -32,6 +32,7 @@ public abstract class Util {
     public static final String ULTIMO_AUDIO = "ultimo_audio";
 
     public static final String PREFERENCIA_MIDIA = "midia_perfs";
+    /*Criação de um subdiretório*/
     public static final String PASTA_MIDIA = "Dominando Android";
 
     private static final String[] EXTENSOES = new String[]{".jpg", ".mp4", ".3gp"};
@@ -44,7 +45,9 @@ public abstract class Util {
             dirMidia.mkdir();
         return new File(dirMidia, nomeMedia + EXTENSOES);
     }
-
+/*O método SalvarUltimaMidia armazena em uma sharedPreferences o caminho do ultimo vídeo, da ultima foto e do ultimo audio salvo
+* dependendo do parametro tipo. O sendBrodcast(intent) que é disparado com a ação ACTION_MEDIA_SCANNER_SCAN_FILE. Isso fará que
+* o Android escaneie o sistema de arquivos e adicione essa nova media à galeria de mídia.*/
     public static void SalvarUltimaMidia(Context context, int tipo, String midia) {
         SharedPreferences preferences = context.getSharedPreferences(PREFERENCIA_MIDIA, Context.MODE_PRIVATE);
         preferences.edit().putString(CHAVES_PREF[tipo], midia).commit();
@@ -53,11 +56,18 @@ public abstract class Util {
         mediaScanIntent.setData(contentUri);
         context.sendBroadcast(mediaScanIntent);
     }
-
+/*O metodo getUltimaMidia retorna o caminho da ultima mídia e carrega informações que salvei no método SalvarUltimaMidia*/
     public static String getUltimaMidia(Context context, int tipo) {
         return context.getSharedPreferences(PREFERENCIA_MIDIA, Context.MODE_PRIVATE).getString(CHAVES_PREF[tipo], null);
     }
-
+/*Esse método carrega a imagem e redmenciona ela para a área que ela vai ser exibida passando o arquivo que queremos carregar,
+* a largura e a altura do imageView onde essa imagem será carregada. Instanciamos um objeto BitmapFactory.Options e setamos a
+* propriedade inJustDecodeBounds para true indicando que apenas queremos ler o tamanho da imagem sem carrega-la realmente em
+* memória. Assim quando chamamos o método decodeFile, o objeto bmOptions armazenará o tamanho real da imagem, e de pose dessa
+* informação para o atributo inSAmplesSize do objeto bmOptions, setamos a propriedade inJustDecodeBounds para false. Um ultimo
+* ajuste que fiz foi utilizar a propriedade inPreferredConfig definindo-a vom o valor RGB_565. Isso demanda menos memória, pois
+* cada pixel da imagem é armazenado em 2 bytes, mas não tem transparência. Por fim, carregamos a imagem real redimensionada  que
+* será retornada*/
     public static Bitmap carregarImagem(File imagem, int largura, int altura) {
         if (largura == 0 || altura == 0)
             return null;
@@ -79,7 +89,8 @@ public abstract class Util {
         bitmap = rotacionar(bitmap, imagem.getAbsolutePath());
         return bitmap;
     }
-
+/*A câmera do aparelho pode tirar fotos em portait ou landscape, por isso precisamos saber a orientação da foto; Utilizamos a
+* classe ExifInterdace no método rotacionar, mas a rotação só efetivamente realizada com o método postRotate da classe matrix*/
     private static Bitmap rotacionar(Bitmap bitmap, String path) {
 
         try {
