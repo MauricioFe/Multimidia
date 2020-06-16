@@ -5,11 +5,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -22,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.mutimidia.Util.Util;
 
@@ -43,16 +41,6 @@ public class CameraFotoFragment extends Fragment implements View.OnClickListener
     public CameraFotoFragment() {
         // Required empty public constructor
     }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CameraFotoFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CameraFotoFragment newInstance(String param1, String param2) {
         CameraFotoFragment fragment = new CameraFotoFragment();
         Bundle args = new Bundle();
@@ -65,11 +53,6 @@ public class CameraFotoFragment extends Fragment implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        String caminhoFoto = Util.getUltimaMidia(getActivity(), Util.MIDIA_FOTO);
-
-        if (caminhoFoto != null) {
-            mCaminhoFoto = new File(caminhoFoto);
-        }
     }
 
     /*No onCreateView inicalizamos o layout do fragment, mas temos um detalhe interessante que é a chamada do método
@@ -127,7 +110,6 @@ public class CameraFotoFragment extends Fragment implements View.OnClickListener
     private void abrirCamera() {
         mCaminhoFoto = Util.novaMidia(Util.MIDIA_FOTO);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mCaminhoFoto));
         startActivityForResult(intent, Util.REQUESTCODE_FOTO);
     }
 /*Executamos a task para abrir a imagem no imageView*/
