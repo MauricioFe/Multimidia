@@ -6,29 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/imgFoto"
-        android:layout_width="229dp"
-        android:layout_height="187dp"
-        android:contentDescription="@string/description"
+    <fragment
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.36"
-        android:background="#cccccc" />
-
-    <ImageButton
-        android:id="@+id/btnFoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/imgFoto"
-        app:layout_constraintStart_toStartOf="@+id/imgFoto"
-        app:layout_constraintTop_toBottomOf="@+id/imgFoto"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        tools:ignore="InvalidId"
-        android:contentDescription="@string/description_btn" />
+        android:name="com.example.mutimidia.CameraFotoFragment"
+        android:id="@+id/fragementFoto"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
