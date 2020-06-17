@@ -25,12 +25,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CameraFotoFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CameraFotoFragment extends Fragment implements View.OnClickListener {
     private File arquivoFoto = null;
     ImageView imageViewFoto;
