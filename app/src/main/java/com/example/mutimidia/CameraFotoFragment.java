@@ -26,6 +26,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CameraFotoFragment extends Fragment implements View.OnClickListener {
+    public static final int REQUEST_IMAGE_CODE = 0;
     private File arquivoFoto = null;
     ImageView imageViewFoto;
 
@@ -61,8 +62,7 @@ public class CameraFotoFragment extends Fragment implements View.OnClickListener
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0 && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == REQUEST_IMAGE_CODE && resultCode == Activity.RESULT_OK && data != null) {
             getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(arquivoFoto)));
             Bitmap bitmap = BitmapFactory.decodeFile(arquivoFoto.getAbsolutePath());
             imageViewFoto.setImageBitmap(bitmap);
@@ -106,7 +106,7 @@ public class CameraFotoFragment extends Fragment implements View.OnClickListener
             Uri photoUri = FileProvider.getUriForFile(getContext(),
                     getContext().getApplicationContext().getPackageName() + ".provider", arquivoFoto);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            startActivityForResult(takePictureIntent, 0);
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CODE);
         }
 
     }
